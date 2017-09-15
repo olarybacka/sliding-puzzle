@@ -1,8 +1,28 @@
-import { size } from '../config'
+import React from 'react';
+import styled from 'styled-components';
+import './Tile.css';
 
 
-export default (item) => `
-<div class='tile' id=${item} style="background: tomato; left: ${size}px; width: ${size}px; height: ${size}px">
-  tile ${item}
-</div>`
+const StyledTile = styled.section`
+text-align: center;
+background: tomato;
+width: ${props => props.size}px;
+height: ${props => props.size}px;
+position: absolute;
+left:  ${props => props.left}px;
+top: ${props => props.top}px;
+border: 1px solid #fff;
+`;
 
+export default (props) => {
+    console.log(props)
+    const {size, i, dimension} = props
+    return (
+        <StyledTile 
+            left = {size * (i % dimension)} 
+            top = { Math.floor(i / dimension) * size}
+            size={size} 
+            className="tile">  
+        </StyledTile>
+    )
+}
