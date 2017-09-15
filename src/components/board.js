@@ -4,6 +4,12 @@ import Tile from './Tile'
 
 export default (props) => (
     <div className="game-board">
-        {props.completedPoisition.map((tile, i) => <Tile key={i} {...props} i={i}  />)}
+        {props.tilePositions.map((tile, i) =>
+            <Tile 
+                key={i} 
+                size={props.size}  
+                dimension={props.dimension}  
+                i={i} />
+        )}
     </div>
 )
