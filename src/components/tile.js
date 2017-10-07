@@ -14,10 +14,16 @@ const StyledTile = styled.section`
     border: 1px solid #fff;
 `;
 
-
 class TileComponent extends Component {
+    clickHandler = (i) => {
+        console.log(i)
+    }
+    onClick(SomeValue) {
+        console.log(SomeValue)
+    }
     render() {
-        const {size, i, dimension} = this.props
+        const { size, i, dimension, moveTile } = this.props
+
         this.id = i;
         return (
             <StyledTile
@@ -25,7 +31,10 @@ class TileComponent extends Component {
                 top={Math.floor(i / dimension) * size}
                 size={size}
                 id={i}
-                className="tile">
+                className="tile"
+                onClick={moveTile.bind(null, i)}
+
+            >
             </StyledTile>
         )
     }
