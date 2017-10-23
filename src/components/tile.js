@@ -15,25 +15,31 @@ const StyledTile = styled.section`
 `;
 
 class TileComponent extends Component {
+    
     clickHandler = (i) => {
         console.log(i)
     }
     onClick(SomeValue) {
         console.log(SomeValue)
     }
+    left;
+    top;
     render() {
-        const { size, i, dimension, moveTile } = this.props
+        const { size, i, dimension, empty, moveTile } = this.props
 
+        this.left = empty ? empty.left : size * (i % dimension);
+        this.top = empty? empty.top : Math.floor(i / dimension) * size 
         this.id = i;
+        console.log(empty)
         return (
             <StyledTile
-                left={size * (i % dimension)}
-                top={Math.floor(i / dimension) * size}
+                left={this.left}
+                top={this.top}
                 size={size}
                 id={i}
                 className="tile"
-                onClick={moveTile.bind(null, i)}
-
+                empty={empty}
+                onClick={moveTile.bind(null, i, this.left, this.top)}
             >
             </StyledTile>
         )
