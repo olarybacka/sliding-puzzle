@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import React, { Component } from 'react'
+import styled from 'styled-components'
 
 const StyledTile = styled.section`
     transition: 200ms ease;
@@ -8,11 +8,11 @@ const StyledTile = styled.section`
     position: absolute;
     left:  ${props => props.left}px;
     top: ${props => props.top}px;
-    background: ${props => (props.id === 0) ? 'none' : 'url("./img/puzzle/1/' + props.id + '.jpg") tomato'};
+    background: ${props => (props.id === 0) ? 'none' : 'url("./img/puzzle/1/' + props.id + '.jpg") grey'};
     background-size: cover;
     color: #fff;
     border: 1px solid #fff;
-`;
+`
 
 class TileComponent extends Component {
     state = {
@@ -35,7 +35,7 @@ class TileComponent extends Component {
                 top: nextProps.position.top
             })
         }
-        return true;
+        return true
     }
 
     render() {
@@ -56,4 +56,4 @@ class TileComponent extends Component {
     }
 }
 
-export default TileComponent;
+export default TileComponent

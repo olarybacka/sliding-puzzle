@@ -1,5 +1,5 @@
 import Tile from '../components/tile'
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 class BoardComponent extends Component {
 
@@ -21,28 +21,28 @@ class BoardComponent extends Component {
 
         size: (
             window.innerWidth > 1500 ? 160 :
-                window.innerWidth > 1020 ? 140 :
-                    window.innerWidth > 500 ? 130 :
-                        100
+            window.innerWidth > 1020 ? 140 :
+            window.innerWidth > 500 ? 130 :
+            100
         ),
         margin: 0,
-        dimension: 3, // 3x3 tiles
+        dimension: 3, // n x n tiles
         empty: {
-            top: null,
-            left: null
+            top: 0,
+            left: 0
         },
         active: {
-            top: null,
-            left: null
+            top: 0,
+            left: 0
         }
-    };
+    }
 
     moveTile = (id, left, top) => {
         this.setState({
             id: id,
             active: {
-                top: this.state.empty.top ? this.state.empty.top : 0,
-                left: this.state.empty.left ? this.state.empty.left : 0
+                top: this.state.empty.top,
+                left: this.state.empty.left
             },
             empty: {
                 top: top,
@@ -52,19 +52,20 @@ class BoardComponent extends Component {
     }
 
     render() {
+        const { size, dimension, id, active, empty, completedPoisition } = this.state
         return (
             <div className="game-board">
-                {this.state.completedPoisition.map((tile, i) =>
+                {completedPoisition.map((tile, i) =>
                     <Tile
                         key={i}
-                        size={this.state.size}
-                        dimension={this.state.dimension}
+                        {...{ size, dimension, i }}
                         moveTile={this.moveTile}
-                        position={i === this.state.id ? this.state.active : i === 0 ? this.state.empty : false}
-                        i={i} />
+                        position={i === id ? active : i === 0 ? empty : false}
+                    />
                 )}
             </div>
         )
     }
+
 }
-export default BoardComponent;
+export default BoardComponent
