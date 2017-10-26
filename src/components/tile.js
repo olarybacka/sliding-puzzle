@@ -1,21 +1,9 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
-
-const StyledTile = styled.section`
-    transition: 200ms ease;
-    width: ${props => props.size}px;
-    height: ${props => props.size}px;
-    position: absolute;
-    left:  ${props => props.left}px;
-    top: ${props => props.top}px;
-    background: ${props => (props.id === 0) ? 'none' : 'url("./img/puzzle/1/' + props.id + '.jpg") grey'};
-    background-size: cover;
-    color: #fff;
-    border: 1px solid #fff;
-`
+import StyledTile from './tile.style'
 
 class TileComponent extends Component {
     state = {
+        id: null,
         top: null,
         left: null
     }
@@ -23,9 +11,14 @@ class TileComponent extends Component {
     componentWillMount() {
         const { size, i, dimension, position } = this.props
         this.setState({
+            id: i,
             left: position ? position.left : size * (i % dimension),
             top: position ? position.top : Math.floor(i / dimension) * size
         })
+    }
+
+    componentDidMount(){
+        this.props.saveInitialState(this.state)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,6 +30,11 @@ class TileComponent extends Component {
         }
         return true
     }
+
+    componentDidUpdate(){
+        this.props.saveCurrentState(this.state)
+    }
+
 
     render() {
         const { left, top } = this.state
