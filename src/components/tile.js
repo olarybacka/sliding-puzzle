@@ -3,13 +3,14 @@ import styled from 'styled-components';
 
 
 const StyledTile = styled.section`
+    transition: 200ms ease;
     text-align: center;
     width: ${props => props.size}px;
     height: ${props => props.size}px;
     position: absolute;
     left:  ${props => props.left}px;
     top: ${props => props.top}px;
-    background: ${props => (props.id === 0) ? 'pink' : 'url("./img/puzzle/1/' + props.id + '.jpg") tomato'};
+    background: ${props => (props.id === 0) ? 'none' : 'url("./img/puzzle/1/' + props.id + '.jpg") tomato'};
     background-size: cover;
     color: #fff;
     border: 1px solid #fff;
@@ -32,21 +33,18 @@ class TileComponent extends Component {
         })
 
     }
-    componentWillReceiveProps() {
-        const { size, i, dimension, position } = this.props
-        if (position) {
-            console.log(position, i)
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.position) {
             this.setState({
-                left: position.left,
-                top: position.top
+                left: nextProps.position.left,
+                top: nextProps.position.top
             })
         }
         return true;
     }
 
     render() {
-        console.log("render")
-        const { size, i, position, text, dimension, moveTile } = this.props
+        const { size, i, position, moveTile } = this.props
 
         return (
             <StyledTile
@@ -58,7 +56,6 @@ class TileComponent extends Component {
                 position={position}
                 onClick={moveTile.bind(null, i, this.state.left, this.state.top)}
             >
-                {JSON.stringify(text)}
             </StyledTile>
         )
     }

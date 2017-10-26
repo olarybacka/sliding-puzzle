@@ -30,31 +30,32 @@ class BoardComponent extends Component {
         margin: 0,
         dimension: 3, // 3x3 tiles
         empty: {
-            top: 0,
-            left: 0
+            top: null,
+            left: null
         },
         active: {
-            top: 0,
-            left: 0
+            top: null,
+            left: null
         }
     };
     moveTile = (id, left, top) => {
         this.setState({
             id: id,
             active: {
-                top: this.state.empty.top,
-                left: this.state.empty.left
-            },
+                top: this.state.empty.top ? this.state.empty.top : 0,
+                left: this.state.empty.left ? this.state.empty.left : 0
+            }
+        })
+        this.setState({
             empty: {
                 top: top,
                 left: left
             },
         })
-        console.log(left, top, this.state)
     }
 
+
     render() {
-        console.log(this.state.id)
         
         return (
             <div className="game-board">
@@ -66,7 +67,6 @@ class BoardComponent extends Component {
                         dimension={this.state.dimension}
                         moveTile={this.moveTile}
                         position={i === this.state.id ? this.state.active : i === 0 ? this.state.empty : false}
-                        text={i === this.state.id}
                         i={i} />
                 )}
             </div>
