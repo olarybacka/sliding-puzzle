@@ -1,8 +1,6 @@
 import Tile from '../components/tile'
 import React, { Component } from 'react';
 
-
-
 class BoardComponent extends Component {
 
     state = {
@@ -38,15 +36,14 @@ class BoardComponent extends Component {
             left: null
         }
     };
+
     moveTile = (id, left, top) => {
         this.setState({
             id: id,
             active: {
                 top: this.state.empty.top ? this.state.empty.top : 0,
                 left: this.state.empty.left ? this.state.empty.left : 0
-            }
-        })
-        this.setState({
+            },
             empty: {
                 top: top,
                 left: left
@@ -54,13 +51,10 @@ class BoardComponent extends Component {
         })
     }
 
-
     render() {
-        
         return (
             <div className="game-board">
                 {this.state.completedPoisition.map((tile, i) =>
-
                     <Tile
                         key={i}
                         size={this.state.size}

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-
 const StyledTile = styled.section`
     transition: 200ms ease;
-    text-align: center;
     width: ${props => props.size}px;
     height: ${props => props.size}px;
     position: absolute;
@@ -22,17 +20,14 @@ class TileComponent extends Component {
         left: null
     }
 
-
-    left;
-    top;
     componentWillMount() {
         const { size, i, dimension, position } = this.props
         this.setState({
             left: position ? position.left : size * (i % dimension),
             top: position ? position.top : Math.floor(i / dimension) * size
         })
-
     }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.position) {
             this.setState({
@@ -44,17 +39,17 @@ class TileComponent extends Component {
     }
 
     render() {
+        const { left, top } = this.state
         const { size, i, position, moveTile } = this.props
 
         return (
             <StyledTile
-                left={this.state.left}
-                top={this.state.top}
+                left={left}
+                top={top}
                 size={size}
                 id={i}
-                className="tile"
                 position={position}
-                onClick={moveTile.bind(null, i, this.state.left, this.state.top)}
+                onClick={moveTile.bind(null, i, left, top)}
             >
             </StyledTile>
         )
@@ -62,4 +57,3 @@ class TileComponent extends Component {
 }
 
 export default TileComponent;
-
