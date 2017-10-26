@@ -41,19 +41,16 @@ class BoardComponent extends Component {
     moveTile = (id, left, top) => {
         this.setState({
             id: id,
-            empty: {
-                top: this.state.active.top,
-                left: this.state.active.left
-            },
             active: {
+                top: this.state.empty.top,
+                left: this.state.empty.left
+            },
+            empty: {
                 top: top,
                 left: left
             },
         })
-    }
-
-    componentDidUpdate() {
-        console.log(this.state.id)
+        console.log(left, top, this.state)
     }
 
     render() {
@@ -68,7 +65,7 @@ class BoardComponent extends Component {
                         size={this.state.size}
                         dimension={this.state.dimension}
                         moveTile={this.moveTile}
-                        empty={i === this.state.id ? this.state.empty : i === 0 ? this.state.active : false}
+                        position={i === this.state.id ? this.state.active : i === 0 ? this.state.empty : false}
                         text={i === this.state.id}
                         i={i} />
                 )}

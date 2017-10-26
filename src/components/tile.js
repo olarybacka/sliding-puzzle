@@ -24,21 +24,30 @@ class TileComponent extends Component {
 
     left;
     top;
-
-    componentWillUpdate() {
-        const { size, i, dimension, empty } = this.props
-        console.log(this.props)
+    componentWillMount() {
+        const { size, i, dimension, position } = this.props
         this.setState({
-            left: empty ? empty.left : size * (i % dimension)
-        });
-        this.setState({
-            top: empty ? empty.top : Math.floor(i / dimension) * size
+            left: position ? position.left : size * (i % dimension),
+            top: position ? position.top : Math.floor(i / dimension) * size
         })
+
+    }
+    componentWillReceiveProps() {
+        const { size, i, dimension, position } = this.props
+        if (position) {
+            console.log(position, i)
+            this.setState({
+                left: position.left,
+                top: position.top
+            })
+        }
+        return true;
     }
 
     render() {
-        const { size, i, dimension, empty, text, moveTile } = this.props
-        this.id = i;
+        console.log("render")
+        const { size, i, position, text, dimension, moveTile } = this.props
+
         return (
             <StyledTile
                 left={this.state.left}
@@ -46,8 +55,8 @@ class TileComponent extends Component {
                 size={size}
                 id={i}
                 className="tile"
-                empty={empty}
-                onClick={moveTile.bind(null, i, this.left, this.top)}
+                position={position}
+                onClick={moveTile.bind(null, i, this.state.left, this.state.top)}
             >
                 {JSON.stringify(text)}
             </StyledTile>
