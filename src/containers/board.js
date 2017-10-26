@@ -32,33 +32,44 @@ class BoardComponent extends Component {
         empty: {
             top: 0,
             left: 0
+        },
+        active: {
+            top: 0,
+            left: 0
         }
     };
     moveTile = (id, left, top) => {
         this.setState({
             id: id,
-        });
-        console.log(this.state)
-    }
-    componentDidMount = (left, top) => {
-        this.setState({
             empty: {
+                top: this.state.active.top,
+                left: this.state.active.left
+            },
+            active: {
                 top: top,
                 left: left
-            }
-        });
+            },
+        })
     }
-    render() {
 
+    componentDidUpdate() {
+        console.log(this.state.id)
+    }
+
+    render() {
+        console.log(this.state.id)
+        
         return (
             <div className="game-board">
                 {this.state.completedPoisition.map((tile, i) =>
+
                     <Tile
                         key={i}
                         size={this.state.size}
                         dimension={this.state.dimension}
                         moveTile={this.moveTile}
-                        empty={i === this.state.id ? this.state.empty : false}
+                        empty={i === this.state.id ? this.state.empty : i === 0 ? this.state.active : false}
+                        text={i === this.state.id}
                         i={i} />
                 )}
             </div>

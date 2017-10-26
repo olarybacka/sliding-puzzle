@@ -9,38 +9,47 @@ const StyledTile = styled.section`
     position: absolute;
     left:  ${props => props.left}px;
     top: ${props => props.top}px;
-    background: ${props => (props.id === 0) ? 'none' : 'url("./img/puzzle/1/' + props.id + '.jpg") tomato'};
+    background: ${props => (props.id === 0) ? 'pink' : 'url("./img/puzzle/1/' + props.id + '.jpg") tomato'};
     background-size: cover;
+    color: #fff;
     border: 1px solid #fff;
 `;
 
 class TileComponent extends Component {
-    
-    clickHandler = (i) => {
-        console.log(i)
+    state = {
+        top: null,
+        left: null
     }
-    onClick(SomeValue) {
-        console.log(SomeValue)
-    }
+
+
     left;
     top;
-    render() {
-        const { size, i, dimension, empty, moveTile } = this.props
 
-        this.left = empty ? empty.left : size * (i % dimension);
-        this.top = empty? empty.top : Math.floor(i / dimension) * size 
+    componentWillUpdate() {
+        const { size, i, dimension, empty } = this.props
+        console.log(this.props)
+        this.setState({
+            left: empty ? empty.left : size * (i % dimension)
+        });
+        this.setState({
+            top: empty ? empty.top : Math.floor(i / dimension) * size
+        })
+    }
+
+    render() {
+        const { size, i, dimension, empty, text, moveTile } = this.props
         this.id = i;
-        console.log(empty)
         return (
             <StyledTile
-                left={this.left}
-                top={this.top}
+                left={this.state.left}
+                top={this.state.top}
                 size={size}
                 id={i}
                 className="tile"
                 empty={empty}
                 onClick={moveTile.bind(null, i, this.left, this.top)}
             >
+                {JSON.stringify(text)}
             </StyledTile>
         )
     }
