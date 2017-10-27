@@ -9,9 +9,9 @@ class BoardComponent extends Component {
         currentPosition: [],
         size: (
             window.innerWidth > 1500 ? 160 :
-            window.innerWidth > 1020 ? 140 :
-            window.innerWidth > 500 ? 130 :
-            100
+                window.innerWidth > 1020 ? 140 :
+                    window.innerWidth > 500 ? 130 :
+                        100
         ),
         margin: 0,
         dimension: 3, // n x n tiles
@@ -26,21 +26,27 @@ class BoardComponent extends Component {
     }
 
     saveInitialState = (state) => {
+        const completedPoisition = this.state.completedPoisition;
+        completedPoisition[state.id] = { ...state }
         this.setState(prevState => ({
-            completedPoisition: [...prevState.completedPoisition, state]
+            completedPoisition
         }))
     }
 
-    saveCurrentState = (state) => {
-        this.setState(prevState => ({
-            currentPosition: [...prevState.currentPosition, state]
-        }))
+    saveCurrentState = async (state) => {
+        setTimeout(() => {
+            const currentPosition = JSON.parse(JSON.stringify(this.state.currentPosition));
+            currentPosition[state.id] = { ...state }
+            this.setState(prevState => ({
+                currentPosition
+            }))
+        })
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         return (nextState.currentPosition === this.state.currentPosition ? true : false)
     }
-    isNextToEmpty(tileObj){
+    isNextToEmpty(tileObj) {
         return Math.abs(tileObj.row - this.emptyObj.row) + Math.abs(tileObj.column - this.emptyObj.column) === 1;
     }
     moveTile = (id, left, top) => {
@@ -61,7 +67,7 @@ class BoardComponent extends Component {
         const { size, dimension, id, active, empty } = this.state
         return (
             <div className="game-board">
-                {Array.from({ length: 9 }).map((tile, i) =>
+                {Array.from({ length: this.state.dimension * this.state.dimension }).map((tile, i) =>
                     <Tile
                         key={i}
                         {...{ size, dimension, i }}

@@ -31,7 +31,7 @@ class TileComponent extends Component {
         return true
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.props.saveCurrentState(this.state)
     }
 
