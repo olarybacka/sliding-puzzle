@@ -23,12 +23,10 @@ class BoardComponent extends Component {
             top: 0,
             left: 0
         },
-        gameInProgress: false
+        gameInProgress: false,
+        shuffleMoves: 2
     }
 
-    componentDidMount() {
-        this.shuffle(3)
-    }
     saveInitialState = (state) => {
         const completedPoisition = this.state.completedPoisition
         completedPoisition[state.id] = { ...state }
@@ -63,7 +61,7 @@ class BoardComponent extends Component {
         }
     }
 
-    shuffle(n) {
+    shuffle = (n) => {
         let last
         let tempo = Math.max(150, 1000 / n)
 
@@ -83,7 +81,6 @@ class BoardComponent extends Component {
                 if (i === n - 1) {
                     this.setState({ gameInProgress: true })
                 }
-
             }, i * tempo)
         }
     }
@@ -92,6 +89,10 @@ class BoardComponent extends Component {
         const { size, empty } = this.state
         const distance = (Math.abs(tile.left - empty.left) + Math.abs(tile.top - empty.top))
         return distance === size
+    }
+
+    startGame = () => {
+        this.shuffle(this.state.shuffleMoves)
     }
 
     render() {
@@ -108,14 +109,15 @@ class BoardComponent extends Component {
                         position={i === id ? active : i === 0 ? empty : false}
                     />
                 )}
-                <StartButton startGame={this.startGame} />
+                <StartButton
+                    gameInProgress={this.state.gameInProgress}
+                    startGame={this.startGame}
+                    moveTile={this.moveTile} />
             </div>
         )
     }
 
-    startGame() {
-        console.log("Start")
-    }
+
     componentDidUpdate() {
         if (this.state.gameInProgress) {
             setTimeout(() => {

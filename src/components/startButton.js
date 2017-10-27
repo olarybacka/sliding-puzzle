@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-const StyledButton = styled.section`
+const StyledButton = styled.button`
 transition: 200ms ease;
 background: tomato;
 color: #fff;
@@ -12,14 +12,19 @@ padding: 10px 30px;
 float: right;
 cursor: pointer;
 text-align: center;
+&:disabled{
+    background: #ffa798;
+}
 `
 
 class StartButton extends Component {
     render() {
 
         return (
-            <StyledButton  
-                onClick={this.props.startGame.bind(null)}>
+            <StyledButton
+                disabled={this.props.gameInProgress}
+                onClick={this.props.startGame.bind(null, this.state)}
+            >
                 Start
             </StyledButton>
         )
