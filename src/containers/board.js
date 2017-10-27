@@ -24,7 +24,7 @@ class BoardComponent extends Component {
             left: 0
         },
         gameInProgress: false,
-        shuffleMoves: 2
+        shuffleMoves: 15
     }
 
     saveInitialState = (state) => {
@@ -63,7 +63,7 @@ class BoardComponent extends Component {
 
     shuffle = (n) => {
         let last
-        let tempo = Math.max(150, 1000 / n)
+        let tempo = Math.max(80, 900 / n)
 
         for (let i = 0; i < n; i++) {
             // eslint-disable-next-line

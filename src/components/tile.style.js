@@ -7,7 +7,7 @@ const StyledTile = styled.button`
     position: absolute;
     left:  ${props => props.left}px;
     top: ${props => props.top}px;
-    background: ${props => (props.id === 0) ? 'none' : 'url("./img/puzzle/1/' + props.id + '.jpg") grey'};
+    background: ${props => (props.i === 0) ? 'none' : 'url("./img/puzzle/1/' + props.i + '.jpg") grey'};
     background-size: cover;
     color: #fff;
     border: 1px solid #fff;

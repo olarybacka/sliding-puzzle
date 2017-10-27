@@ -20,7 +20,6 @@ class TileComponent extends Component {
     componentDidMount(){
         this.props.saveInitialState(this.state)
         this.props.saveCurrentState(this.state)
-        
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,17 +36,13 @@ class TileComponent extends Component {
         this.props.saveCurrentState(this.state)
     }
 
-
     render() {
         const { left, top } = this.state
         const { size, i, position, moveTile, gameInProgress } = this.props
 
         return (
             <StyledTile
-                left={left}
-                top={top}
-                size={size}
-                id={i}
+                {...{ left, top, size, i }}
                 disabled={!gameInProgress}
                 position={position}
                 onClick={moveTile.bind(null, this.state)}
