@@ -19,6 +19,8 @@ class TileComponent extends Component {
 
     componentDidMount(){
         this.props.saveInitialState(this.state)
+        this.props.saveCurrentState(this.state)
+        
     }
 
     componentWillReceiveProps(nextProps) {
@@ -47,7 +49,7 @@ class TileComponent extends Component {
                 size={size}
                 id={i}
                 position={position}
-                onClick={moveTile.bind(null, i, left, top)}
+                onClick={moveTile.bind(null, this.state)}
             >
             </StyledTile>
         )
