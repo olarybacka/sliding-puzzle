@@ -9,7 +9,6 @@ border: 1px solid #fff;
 z-index: 100;
 margin-left: 500px;
 padding: 10px 30px;
-float: right;
 cursor: pointer;
 text-align: center;
 &:disabled{

@@ -103,6 +103,7 @@ class BoardComponent extends Component {
                     <Tile
                         key={i}
                         {...{ size, dimension, i }}
+                        gameInProgress={this.state.gameInProgress}
                         moveTile={this.moveTile}
                         saveInitialState={this.saveInitialState}
                         saveCurrentState={this.saveCurrentState}
@@ -123,13 +124,11 @@ class BoardComponent extends Component {
             setTimeout(() => {
                 if (JSON.stringify(this.state.currentPosition) === JSON.stringify(this.state.completedPoisition)) {
                     this.setState({ gameInProgress: false })
-                    console.log("wygrana")
+                    console.log("you won")
                 }
             })
         }
     }
-
 }
+
 export default BoardComponent
-
-

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const StyledTile = styled.section`
+const StyledTile = styled.button`
     transition: 200ms ease;
     width: ${props => props.size}px;
     height: ${props => props.size}px;
@@ -11,6 +11,10 @@ const StyledTile = styled.section`
     background-size: cover;
     color: #fff;
     border: 1px solid #fff;
+    cursor:pointer;
+    &:disabled{
+        cursor: no-drop;
+    }
 `
 
 export default StyledTile
