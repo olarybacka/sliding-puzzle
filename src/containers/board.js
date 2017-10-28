@@ -8,85 +8,66 @@ class BoardComponent extends Component {
         id: null,
         completedPoisition: [],
         currentPosition: [],
-        size: (
-            window.innerWidth > 1500 ? 160 :
-                window.innerWidth > 1020 ? 140 :
-                    window.innerWidth > 500 ? 130 :
-                        100
-        ),
+        size: 160,
         dimension: 3, // n x n tiles
-        empty: {
-            top: 0,
-            left: 0
-        },
-        active: {
-            top: 0,
-            left: 0
-        },
         gameInProgress: false,
-        shuffleMoves: 15
+        shuffleMoves: 2
     }
 
-    saveInitialState = (state) => {
-        const completedPoisition = this.state.completedPoisition
-        completedPoisition[state.id] = { ...state }
-        this.setState({ completedPoisition })
+    constructor() {
+        super()
+        const { dimension, size } = this.state
+        const currentPosition = Array.from({ length: dimension ** 2 })
+            .map((t, i) => ({
+                left: size * (i % dimension),
+                top: Math.floor(i / dimension) * size
+            }))
+
+        const completedPoisition = [...currentPosition]
+
+        this.state = {
+            ...this.state,
+            currentPosition,
+            completedPoisition
+        };
     }
 
-    saveCurrentState = (state) => {
-        setTimeout(() => {
-            const currentPosition = JSON.parse(JSON.stringify(this.state.currentPosition)) // deep copy to avoid looping in shouldComponentUpdate
-            currentPosition[state.id] = { ...state }
+    moveTile = (i) => {
+        if (this.isNextToEmpty(this.state.currentPosition[i])) {
+            const currentPosition = [...this.state.currentPosition]
+            currentPosition[i] = currentPosition[0]
+            currentPosition[0] = this.state.currentPosition[i]
             this.setState({ currentPosition })
-        })
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return (nextState.currentPosition === this.state.currentPosition ? true : false)
-    }
-
-    moveTile = (tile) => {
-        if (this.isNextToEmpty(tile)) {
-            this.setState({
-                id: tile.id,
-                active: {
-                    top: this.state.empty.top,
-                    left: this.state.empty.left
-                },
-                empty: {
-                    top: tile.top,
-                    left: tile.left
-                },
-            })
         }
     }
 
     shuffle = (n) => {
         let last
         let tempo = Math.max(80, 900 / n)
-
         for (let i = 0; i < n; i++) {
             // eslint-disable-next-line
             setTimeout(() => {
                 let nexts = []
 
-                this.state.currentPosition.forEach((tile) => {
-                    if (tile.id !== last && this.isNextToEmpty(tile)) {
-                        nexts.push(tile.id)
+                this.state.currentPosition.forEach((tile, i) => {
+                    if (i !== last && this.isNextToEmpty(tile)) {
+                        nexts.push(i)
                     }
                 })
 
                 last = nexts[Math.floor(Math.random() * nexts.length)]
-                this.moveTile(this.state.currentPosition[last])
+                this.moveTile(last)
                 if (i === n - 1) {
                     this.setState({ gameInProgress: true })
                 }
             }, i * tempo)
         }
+        console.log("PO")
     }
 
     isNextToEmpty(tile) {
-        const { size, empty } = this.state
+        const empty = this.state.currentPosition[0]
+        const { size } = this.state
         const distance = (Math.abs(tile.left - empty.left) + Math.abs(tile.top - empty.top))
         return distance === size
     }
@@ -96,37 +77,33 @@ class BoardComponent extends Component {
     }
 
     render() {
-        const { size, dimension, id, active, empty } = this.state
+        const { size, dimension } = this.state
         return (
             <div className="game-board">
-                {Array.from({ length: this.state.dimension * this.state.dimension }).map((tile, i) =>
+                {Array.from({ length: this.state.dimension ** 2 }).map((tile, i) =>
                     <Tile
                         key={i}
                         {...{ size, dimension, i }}
-                        gameInProgress={this.state.gameInProgress}
                         moveTile={this.moveTile}
-                        saveInitialState={this.saveInitialState}
-                        saveCurrentState={this.saveCurrentState}
-                        position={i === id ? active : i === 0 ? empty : false}
+                        gameInProgress={true}
+                        position={this.state.currentPosition[i]}
+                        i={i}
                     />
                 )}
-                <StartButton
+                {<StartButton
                     gameInProgress={this.state.gameInProgress}
                     startGame={this.startGame}
-                    moveTile={this.moveTile} />
+                />}
             </div>
         )
     }
 
-
     componentDidUpdate() {
         if (this.state.gameInProgress) {
-            setTimeout(() => {
-                if (JSON.stringify(this.state.currentPosition) === JSON.stringify(this.state.completedPoisition)) {
-                    this.setState({ gameInProgress: false })
-                    console.log("you won")
-                }
-            })
+            if (JSON.stringify(this.state.currentPosition) === JSON.stringify(this.state.completedPoisition)) {
+                this.setState({ gameInProgress: false })
+                console.log("you won")
+            }
         }
     }
 }

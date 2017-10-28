@@ -22,7 +22,7 @@ class StartButton extends Component {
         return (
             <StyledButton
                 disabled={this.props.gameInProgress}
-                onClick={this.props.startGame.bind(null, this.state)}
+                onClick={this.props.startGame.bind(null)}
             >
                 Start
             </StyledButton>
