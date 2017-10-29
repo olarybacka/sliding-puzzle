@@ -16,7 +16,7 @@ const StyledTile = styled.button`
         cursor: no-drop;
     }
     &:focus{
-        outline: none;
+        outline: none;d
     }
 `
 
