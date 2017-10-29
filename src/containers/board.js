@@ -5,7 +5,6 @@ import StartButton from '../components/startButton'
 class BoardContainer extends Component {
 
     state = {
-        id: null,
         completedPoisition: [],
         currentPosition: [],
         size: 160,
@@ -17,7 +16,7 @@ class BoardContainer extends Component {
     constructor() {
         super()
         const { dimension, size } = this.state
-        const currentPosition = Array.from({ length: dimension ** 2 })
+        const currentPosition = Array.from({ length: dimension * dimension })
             .map((t, i) => ({
                 left: size * (i % dimension),
                 top: Math.floor(i / dimension) * size
@@ -47,14 +46,14 @@ class BoardContainer extends Component {
 
     shuffle = async () => {
         let last
-        let speed = 800 / this.state.shuffleMoves
+        let speed = Math.min(100, 800 / this.state.shuffleMoves)
         for (let i = 0; i < this.state.shuffleMoves; i++) {
             // eslint-disable-next-line
             await new Promise((resolve) => {
                 setTimeout(() => {
                     let candidates = this.state.currentPosition
                         .map((tile, i) => (i !== last && this.isNextToEmpty(tile)) ? i : null)
-                        .filter((tile) => tile)
+                        .filter(tile => tile)
 
                     last = candidates[Math.floor(Math.random() * candidates.length)]
                     this.moveTile(last)

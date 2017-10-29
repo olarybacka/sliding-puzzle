@@ -15,6 +15,9 @@ const StyledTile = styled.button`
     &:disabled{
         cursor: no-drop;
     }
+    &:focus{
+        outline: none;
+    }
 `
 
 export default StyledTile
