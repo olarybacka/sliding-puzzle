@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const StyledButton = styled.button`
@@ -16,18 +16,13 @@ text-align: center;
 }
 `
 
-class StartButton extends Component {
-    render() {
+export default ({ gameInProgress, startGame }) => (
 
-        return (
-            <StyledButton
-                disabled={this.props.gameInProgress}
-                onClick={this.props.startGame.bind(null)}
-            >
-                Start
-            </StyledButton>
-        )
-    }
-}
 
-export default StartButton
+    <StyledButton
+        disabled={gameInProgress}
+        onClick={startGame.bind(null)}
+    >
+        Start
+    </StyledButton>
+)

@@ -2,7 +2,7 @@ import Tile from '../components/tile'
 import React, { Component } from 'react'
 import StartButton from '../components/startButton'
 
-class BoardComponent extends Component {
+class BoardContainer extends Component {
 
     state = {
         id: null,
@@ -11,7 +11,7 @@ class BoardComponent extends Component {
         size: 160,
         dimension: 3, // n x n tiles
         gameInProgress: false,
-        shuffleMoves: 2
+        shuffleMoves: 23
     }
 
     constructor() {
@@ -32,37 +32,36 @@ class BoardComponent extends Component {
         };
     }
 
-    moveTile = (i) => {
+    tileClicked = (i) => {
         if (this.isNextToEmpty(this.state.currentPosition[i])) {
-            const currentPosition = [...this.state.currentPosition]
-            currentPosition[i] = currentPosition[0]
-            currentPosition[0] = this.state.currentPosition[i]
-            this.setState({ currentPosition })
+            this.moveTile(i)
         }
     }
 
-    shuffle = (n) => {
+    moveTile(i) {
+        const currentPosition = [...this.state.currentPosition]
+        currentPosition[i] = currentPosition[0]
+        currentPosition[0] = this.state.currentPosition[i]
+        this.setState({ currentPosition })
+    }
+
+    shuffle = async () => {
         let last
-        let tempo = Math.max(80, 900 / n)
-        for (let i = 0; i < n; i++) {
+        let speed = 800 / this.state.shuffleMoves
+        for (let i = 0; i < this.state.shuffleMoves; i++) {
             // eslint-disable-next-line
-            setTimeout(() => {
-                let nexts = []
+            await new Promise((resolve) => {
+                setTimeout(() => {
+                    let candidates = this.state.currentPosition
+                        .map((tile, i) => (i !== last && this.isNextToEmpty(tile)) ? i : null)
+                        .filter((tile) => tile)
 
-                this.state.currentPosition.forEach((tile, i) => {
-                    if (i !== last && this.isNextToEmpty(tile)) {
-                        nexts.push(i)
-                    }
-                })
-
-                last = nexts[Math.floor(Math.random() * nexts.length)]
-                this.moveTile(last)
-                if (i === n - 1) {
-                    this.setState({ gameInProgress: true })
-                }
-            }, i * tempo)
+                    last = candidates[Math.floor(Math.random() * candidates.length)]
+                    this.moveTile(last)
+                    resolve()
+                }, speed)
+            })
         }
-        console.log("PO")
     }
 
     isNextToEmpty(tile) {
@@ -73,7 +72,7 @@ class BoardComponent extends Component {
     }
 
     startGame = () => {
-        this.shuffle(this.state.shuffleMoves)
+        this.shuffle().then(() => this.setState({ gameInProgress: true }))
     }
 
     render() {
@@ -84,10 +83,9 @@ class BoardComponent extends Component {
                     <Tile
                         key={i}
                         {...{ size, dimension, i }}
-                        moveTile={this.moveTile}
-                        gameInProgress={true}
+                        moveTile={this.tileClicked}
+                        gameInProgress={this.state.gameInProgress}
                         position={this.state.currentPosition[i]}
-                        i={i}
                     />
                 )}
                 {<StartButton
@@ -102,10 +100,10 @@ class BoardComponent extends Component {
         if (this.state.gameInProgress) {
             if (JSON.stringify(this.state.currentPosition) === JSON.stringify(this.state.completedPoisition)) {
                 this.setState({ gameInProgress: false })
-                console.log("you won")
+                setTimeout(() => alert("you won"), 300)
             }
         }
     }
 }
 
-export default BoardComponent
+export default BoardContainer
