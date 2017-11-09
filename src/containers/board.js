@@ -28,7 +28,7 @@ class BoardContainer extends Component {
             ...this.state,
             currentPosition,
             completedPoisition
-        };
+        }
     }
 
     tileClicked = (i) => {
@@ -48,13 +48,11 @@ class BoardContainer extends Component {
         let last
         let speed = Math.min(100, 800 / this.state.shuffleMoves)
         for (let i = 0; i < this.state.shuffleMoves; i++) {
-            // eslint-disable-next-line
             await new Promise((resolve) => {
                 setTimeout(() => {
                     let candidates = this.state.currentPosition
                         .map((tile, i) => (i !== last && this.isNextToEmpty(tile)) ? i : null)
                         .filter(tile => tile)
-
                     last = candidates[Math.floor(Math.random() * candidates.length)]
                     this.moveTile(last)
                     resolve()
